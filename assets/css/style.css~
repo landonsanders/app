@@ -1,0 +1,51 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+div {
+	overflow: hidden;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	display: inline;
+}
+
+
+img {
+	float: left;
+	margin-right: 16px;
+}
+
+.wrapper {
+	padding-top: 16px;
+}
+
+.container {
+	width: 960px;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.person {
+	width: 400px;
+}
+
+.person-thumbnail {
+	width: 150px;
+	height: 150px;
+}
+
+.person-info {
+
+}
+
+.person-pic {
+	width: 500px;
+	height: 500px;
+}

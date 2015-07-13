@@ -1,0 +1,11 @@
+var Marionette = Backbone.Marionette;
+
+var ContactManager = new Backbone.Marionette.Application();
+
+ContactManager.on('initialize:after', function () {
+	console.log('After!');
+});
+
+ContactManager.addRegions({
+	main: '#main-region'
+});

@@ -1,0 +1,18 @@
+ContactManager.module('List', function (List, ContactManager, Backbone, Marionette, $, _) {
+
+	List.ItemView = Marionette.ItemView.extend({
+		tagName: 'ul',
+		template: 'person-template',
+		events: {
+			'click': 'handler'
+		},
+		handler: function () {
+			this.trigger('click:itemview', this.model);
+		}
+	});	
+
+	List.CollectionView = Marionette.CollectionView.extend({
+		tagName: 'ul',
+		childView: List.ItemView
+	});
+});

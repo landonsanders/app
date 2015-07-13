@@ -1,0 +1,134 @@
+<!doctype html>
+	<html>
+		<head>
+			<title>Backbone People</title>
+			
+			<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+		</head>
+		<body>
+
+			<div class="container"><h1>Backbone People</h1></div>
+
+			<div id="main" class="container"></div>
+
+			<script type="text/template" id="person-template">
+				<img class="person-thumbnail" src="<%= img %>">
+				<div class="person-info">
+					<h3><%= username %></h3>
+					<p><a href="#person/<%= id %>"><%= handle %></a></p>
+				</div>
+			</script>
+
+			<script type="text/template" id="person-single-template">
+				<img class="person-thumbnail" src="<%= img %>">
+				<div class="person-info">
+					<h3><%= username %></h3>
+					<p><a href="#person/<%= id %>"><%= handle %></a></p>
+					<p><%= about %></p>
+				</div>
+			</script>
+		
+			<script src="assets/js/vendor/jquery.js"></script>
+			<script src="assets/js/vendor/underscore.js"></script>
+			<script src="assets/js/vendor/backbone.js"></script>
+	
+			<script>
+				var DATA = [{
+						id: 0,
+						username: 'John J. Doe',
+						handle: '@johnjdoe',
+						img: 'assets/img/john-j.png',
+						about: 'Hi, I am George E. Doe. I am a web designer and web developer. I have been one for over ten years. I program, with HTML, CSS and Javascript. I am programming with Backbone, here at My Company!'
+					},
+{
+						id: 1,
+						username: 'George E. Doe',
+						handle: '@georgeedoe',
+						img: 'assets/img/george-e.png',
+						about: 'Hi, I am George E. Doe. I am a web designer and web developer. I have been one for over ten years. I program, with HTML, CSS and Javascript. I am programming with Backbone, here at My Company!'
+					},
+{
+						id: 2,
+						username: 'Joe J. Doe',
+						handle: '@joejdoe',
+						img: 'assets/img/joe-j.png',
+						about: 'Hi, I am George E. Doe. I am a web designer and web developer. I have been one for over ten years. I program, with HTML, CSS and Javascript. I am programming with Backbone, here at My Company!'
+					}];
+
+				var Person = Backbone.Model.extend({
+					defaults: {
+						username: 'Default',
+						handle: '@default',
+						about: 'Hi, I am Default.'
+					}
+				});
+
+				var View = Backbone.View.extend({
+					className: 'person',
+					template: _.template(jQuery('#person-template').html()),
+					render: function () {
+						this.$el.html(this.template(this.model.toJSON()));
+						return this;
+					}
+				});
+
+				var People = Backbone.Collection.extend({model: Person});
+
+				var people = new People(DATA);
+
+				var PeopleView = Backbone.View.extend({
+					render: function () {
+						this.collection.each(function (model) {
+							var view = new View({model: model});
+							view.render();
+
+							this.$el.append(view.el);
+						}, this);
+					}
+				});
+
+				var Pages = Backbone.Router.extend({
+					routes: {
+						'person/:id':'handler'
+					},
+					handler: function (id) {
+	
+						var value = id;
+
+						people.each(function (model) {
+
+							if (model.get('id') === parseInt(id, 10)) {
+								value = model;
+							}
+
+							
+						}, this);
+
+						jQuery('#main').empty();
+				
+						var SingleView = Backbone.View.extend({	
+							template:  _.template(jQuery('#person-single-template').html()),
+							render: function () {
+									this.$el.html(this.template(this.model.toJSON()));
+							}
+						});
+						
+						var view = new SingleView({model: value});
+
+						view.render();
+		
+						jQuery('#main').append((view.el));				
+					}
+				});
+
+				var view = new PeopleView({collection: people});
+	
+				view.render();
+
+				jQuery('#main').append(view.el);
+
+				new Pages;
+				Backbone.history.start();
+			</script>
+		</body>
+	</html>

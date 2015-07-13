@@ -1,0 +1,13 @@
+<!doctype html>
+	<html>
+		<head>
+			<title>Marionette People</title>
+		</head>
+		<body>
+			<script src="assets/js/vendor/jquery.js"></script>
+			<script src="assets/js/vendor/underscore.js"></script>
+			<script src="assets/js/vendor/backbone.js"></script>
+			<script src="assets/js/vendor/marionette.js"></script>
+		</body>
+	</html>
+

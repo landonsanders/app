@@ -1,0 +1,96 @@
+<!doctype html>
+	<html>
+		<head>
+			<title>Marionette People</title>
+		</head>
+		<body>
+			<h1>Marionette People</h1>
+
+			<div id="main"></div>
+
+			<script type="text/template" id="person-template">
+				<img class="person-thumbnail" src="<%= img %>">
+				<div class="person-info">
+					<h3><%= username %></h3>
+					<p><a href="#person/<%= id %>">@georgeedoe</a></p>
+				</div>
+			</script>
+
+			<script src="assets/js/vendor/jquery.js"></script>
+			<script src="assets/js/vendor/underscore.js"></script>
+			<script src="assets/js/vendor/backbone.js"></script>
+			<script src="assets/js/vendor/marionette.js"></script>
+
+			<script>
+				var DATA = [{
+						id: 0,
+						username: 'John J. Doe',
+						handle: '@johnjdoe',
+						img: 'assets/img/john-j.png',
+						about: 'Hi, I am George E. Doe. I am a web designer and web developer. I have been one for over ten years. I program, with HTML, CSS and Javascript. I am programming with Backbone, here at My Company!'
+					},
+{
+						id: 1,
+						username: 'George E. Doe',
+						handle: '@georgeedoe',
+						img: 'assets/img/george-e.png',
+						about: 'Hi, I am George E. Doe. I am a web designer and web developer. I have been one for over ten years. I program, with HTML, CSS and Javascript. I am programming with Backbone, here at My Company!'
+					},
+{
+						id: 2,
+						username: 'Joe J. Doe',
+						handle: '@joejdoe',
+						img: 'assets/img/joe-j.png',
+						about: 'Hi, I am George E. Doe. I am a web designer and web developer. I have been one for over ten years. I program, with HTML, CSS and Javascript. I am programming with Backbone, here at My Company!'
+					}];
+
+				var APP = new Backbone.Marionette.Application();
+
+				APP.Model = Backbone.Model.extend({
+
+					defaults: {
+						id: '',
+						username: 'Default',
+						handle: '@default',
+						img: 'assets/img/default.png',
+						about: 'Hi, I am the default person.'}
+				});
+
+				APP.Collection = Backbone.Collection.extend({model: APP.Model});
+
+				var COLLECTION = new APP.Collection(DATA);
+
+				APP.ItemView = Backbone.Mariontte.ItemView.extend({
+						template: '#person-template'}
+				);
+
+				APP.Pages = Backbone.Router.extend({
+					routes: {
+						'person/:id': 'handler'
+					},
+
+					handler: function (id) {
+
+						console.log(id)
+					}
+				});
+
+				APP.CollectionView = Backbone.Marionette.CollectionView.extend({
+						childView: APP.ItemView
+				});
+
+				APP.addRegions({
+					main: '#main'
+				});
+				APP.on('start', function () {
+					new APP.Pages;
+
+					Backbone.history.start();
+					var views = new APP.CollectionView({collection: COLLECTION});
+
+					APP.main.show(views);
+				});
+			</script>
+		</body>
+	</html>
+
